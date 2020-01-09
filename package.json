@@ -31,7 +31,11 @@
     "watch": "tsc -w"
   },
   "dependencies": {
-    "@jupyterlab/application": "^1.0.0"
+    "@jupyterlab/application": "^1.0.0",
+    "@jupyterlab/filebrowser": "^1.2.1",
+    "@jupyterlab/notebook": "^1.2.2",
+    "@lumino/algorithm": "^1.2.3",
+    "@lumino/coreutils": "^1.4.2"
   },
   "devDependencies": {
     "rimraf": "^2.6.1",
