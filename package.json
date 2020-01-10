@@ -45,6 +45,29 @@
     "style/*.css"
   ],
   "jupyterlab": {
-    "extension": true
+    "extension": true,
+    "discovery": {
+      "kernel": [
+        {
+          "kernel_spec": {
+            "language": "^python"
+          },
+          "base": {
+            "name": "callisto-nbshare"
+          },
+          "managers": [
+            "pip"
+          ]
+        }
+      ]
+    },
+    "server": {
+      "base": {
+        "name": "callisto_nbshare"
+      },
+      "managers": [
+        "pip"
+      ]
+    }
   }
 }

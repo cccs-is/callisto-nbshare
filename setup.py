@@ -13,7 +13,7 @@ install_requires = [
 
 setuptools.setup(
     name="callisto-nbshare",
-    version="0.0.1",
+    version="0.0.2",
     author="cccs",
     author_email="",
     description="Share a notebook on Callisto",

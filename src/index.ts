@@ -1,6 +1,7 @@
 import { IDisposable } from '@phosphor/disposable';
 
 import {
+  showErrorMessage,
   ToolbarButton,
   ICommandPalette
 } from '@jupyterlab/apputils';
@@ -100,24 +101,41 @@ function addCommands(
     const widget = notebookTracker.currentWidget;
     const activate = args['activate'] !== false;
 
-    console.log('getCurrent()->args:', args)
-      console.log('getCurrent()->activate:', activate)
-      if (activate && widget) {
-        shell.activateById(widget.id);
-      }
+    //console.log('getCurrent()->args:', args)
+    //console.log('getCurrent()->activate:', activate)
+    if (activate && widget) {
+      shell.activateById(widget.id);
+    }
 
     return widget;
   }
 
+  /**
+   * share file with Callisto
+   */
+  const shareFile = async(filepath: string): Promise<void> => {
+    const response = await ServerConnection.makeRequest(
+      `${serverSettings.baseUrl}callisto/share/${filepath}`,
+      {method: 'PUT'},
+      serverSettings
+    );
+    if (response.status !== 200) {
+      const msg = 
+        'Failed to send file to Callisto... contact your system administrator';
+      const err = new Error(msg);
+      void showErrorMessage('Error sharing on Callisto', err);
+      throw err;
+    }
+  }
+
+
   commands.addCommand(CommandIDs.shareNotebookFile, {
     execute: () => {
       const widget = fileBrowser.currentWidget;
-      console.log('execute shareNotebookFile CMD...');
-      console.log('settings:', serverSettings);
       if (widget) {
         Promise.all(toArray(widget.selectedItems())
                .filter(item => item.type !== 'directory')
-               .map(item => console.log(item, item.path)));
+               .map(item => shareFile(item.path)));
       }
       
     },
@@ -128,15 +146,11 @@ function addCommands(
 
   commands.addCommand(CommandIDs.shareNotebookCurrent, {
     execute: args => {
-      console.log('execute shareNotebookCurrent CMD...')
       const current = getCurrent(args);
 
       if (current) {
-        //const {context, content } = current;
-       console.log('context:', current.context)
-       //console.log('content:', content)
-       console.log('... do action here...')
-       //return NotebookActions.runAll(content, context.sessionContext);
+        //console.log('context:', current.context)
+        shareFile(current.context.path)
       }
     },
     iconClass: 'fa fa-share-square-o',

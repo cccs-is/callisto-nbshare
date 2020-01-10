@@ -19,7 +19,7 @@ def load_jupyter_server_extension(nb_server_app):
     web_app = nb_server_app.web_app
     host_pattern = '.*$'
     base_url = web_app.settings["base_url"]
-    share_file_path = url_path_join(base_url, 'callisto/share/' + filename_regex)
+    share_file_path = url_path_join(base_url, 'callisto/share/(?P<filepath>.+)')
     handlers = [
         (share_file_path, ShareFileHandler)
     ]
