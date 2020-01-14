@@ -119,12 +119,18 @@ function addCommands(
       {method: 'PUT'},
       serverSettings
     );
+
+    console.log('got status code:', response.status)
     if (response.status !== 200) {
-      const msg = 
-        'Failed to send file to Callisto... contact your system administrator';
-      const err = new Error(msg);
+      //const msg = 
+      //  'Failed to send file to Callisto... contact your system administrator';
+      //const err = new Error(msg);
+      const err = await response.json();
       void showErrorMessage('Error sharing on Callisto', err);
       throw err;
+    }
+    else {
+      void showErrorMessage('Notebook sharing', 'File is shared on Callisto');
     }
   }
 

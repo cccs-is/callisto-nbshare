@@ -39,6 +39,7 @@ class ShareFileHandler(APIHandler):
         if filepath != "":
             print('put() -> sharing... {} ... on Callisto!!!!...'.format(filepath))
             self.share(filepath)
+            print('put() -> status code:', this.status_code)
 
 
     def share(self, filename):
@@ -68,16 +69,17 @@ class ShareFileHandler(APIHandler):
            
           if response.status_code != 200:
               # TODO handle token refresh
-              self.finish('Upload failed. Gallery returned code: {0}'.format(response.status_code))
-              return
+              # self.finish('Upload failed. Gallery returned code: {0}'.format(response.status_code))
+              raise web.HTTPError(response.status_code, "Upload failed. Please contact your system administrator.")
 
           # TBD!! do we need to redirect or just publish and return?!!!!  
-          redirect_url = base_url + ENDPOINT_POST_SHARE
-          self.redirect(redirect_url)
+          # redirect_url = base_url + ENDPOINT_POST_SHARE
+          # self.redirect(redirect_url)
+          self.set_status(response.status_code)
+          self.finish()
 
       except Exception as e:
-          print('.... Exception: ', e)
           logger.info('Exception while publishing notebook: {0}'.format(repr(e)))
-          self.finish('Your upload failed. Please contact system administrator.\n{0}'.format(repr(e)))
+          # self.finish('Your upload failed. Please contact your system administrator.\n{0}'.format(repr(e)))
           raise web.HTTPError(500, str(e))
-  
+ 
