@@ -53,11 +53,11 @@ class ShareFileHandler(APIHandler):
           oauth_cookies = {OAUTH_COOKIE_NAME: self.request.cookies[OAUTH_COOKIE_NAME].value}
   
       try:
-          notebook_filename = filename
+          notebook_filename = os.path.basename(filename)
           nodebook_content = ''
 
           # print('.... in share()-> notebook_filename:', notebook_filename)
-          with open(notebook_filename, 'r') as f:
+          with open(filename, 'r') as f:
             notebook_content = f.read()
 
           data = {'notebook_name': notebook_filename, 'notebook_contents': notebook_content}
