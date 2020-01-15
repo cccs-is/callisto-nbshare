@@ -39,7 +39,6 @@ class ShareFileHandler(APIHandler):
         if filepath != "":
             print('put() -> sharing... {} ... on Callisto!!!!...'.format(filepath))
             self.share(filepath)
-            print('put() -> status code:', this.status_code)
 
 
     def share(self, filename):
