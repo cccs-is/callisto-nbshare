@@ -64,7 +64,8 @@ class ShareFileHandler(APIHandler):
           post_url = base_url + ENDPOINT_UPLOAD
   
           headers = {'Authorization': 'Bearer ' + access_token}
-          response = requests.post(url=post_url, headers=headers, cookies=oauth_cookies, data=data, timeout=5.0)
+          # TODO add HTTPS extra certificates in the environment variable
+          response = requests.post(url=post_url, headers=headers, cookies=oauth_cookies, data=data, timeout=5.0, verify=False)
            
           if response.status_code != 200:
               # TODO handle token refresh
